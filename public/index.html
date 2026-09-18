@@ -1,0 +1,112 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CZY3D Complete Compare Viewer</title>
+  <link rel="stylesheet" href="/style.css" />
+  <script type="importmap">
+  {
+    "imports": {
+      "three": "/vendor/three/build/three.module.js",
+      "three/addons/": "/vendor/three/examples/jsm/"
+    }
+  }
+  </script>
+</head>
+<body>
+  <div id="app">
+    <aside id="panel">
+      <h1>CZY3D Complete Compare</h1>
+      <p class="lead">원본 배치 GLB + CZY3D 조명 비교</p>
+
+      <section>
+        <h2>CZY3D 모델</h2>
+        <select id="modelSelect">
+          <option value="original">CZY3D PBR (불투명)</option>
+          <option value="neutral">Neutral (불투명)</option>
+        </select>
+        <p class="hint">CZY3D 모델은 scene.json의 원본 배치를 유지합니다.</p>
+      </section>
+
+      <section>
+        <h2>내 모델 A-D</h2>
+        <div class="model-grid">
+          <button class="user-model-btn" data-folder="A">A</button>
+          <button class="user-model-btn" data-folder="B">B</button>
+          <button class="user-model-btn" data-folder="C">C</button>
+          <button class="user-model-btn" data-folder="D">D</button>
+        </div>
+        <div class="row top-gap">
+          <button id="reloadCurrentBtn">현재 모델 다시 로드</button>
+          <button id="refreshFoldersBtn">폴더 새로고침</button>
+        </div>
+        <div id="folderInfo" class="codebox">A-D 폴더 확인 중...</div>
+        <p class="hint">
+          public/models/A ~ D 안에 .glb를 넣으세요. 버튼을 누르면 해당 폴더의 GLB를 전부 로드하며,
+          각 GLB 루트는 (0,0,0)에 놓입니다. GLB 내부 자식 transform과 Material은 그대로 유지합니다.
+        </p>
+      </section>
+
+      <section>
+        <h2>조명 모드</h2>
+        <div class="mode-grid">
+          <button data-lighting="authored" class="lighting-btn active">저장 Scene</button>
+          <button data-lighting="init" class="lighting-btn">초기화</button>
+          <button data-lighting="combined" class="lighting-btn">결합 비교</button>
+        </div>
+        <div id="lightingInfo" class="codebox"></div>
+      </section>
+
+      <section>
+        <h2>HDR 선택</h2>
+        <select id="hdrSelect">
+          <option value="">프리셋 기본 HDR</option>
+        </select>
+        <div class="row">
+          <button id="refreshHdrBtn" class="wide">HDR 목록 새로고침</button>
+        </div>
+        <p id="hdrState" class="hint">
+          input/hdr 폴더에 .hdr 파일을 넣은 뒤 목록을 새로고침하세요.
+        </p>
+      </section>
+
+      <section>
+        <h2>표시</h2>
+        <label><input id="showBackground" type="checkbox" checked /> HDR 배경 표시</label>
+        <label><input id="showHelpers" type="checkbox" /> Light helper 표시</label>
+      </section>
+
+      <section>
+        <h2>카메라</h2>
+        <div class="row">
+          <button id="fitBtn">모델 맞추기</button>
+          <button id="resetBtn">초기화</button>
+        </div>
+      </section>
+
+      <section>
+        <h2>원본 sky.hdr</h2>
+        <button id="fetchSkyBtn" class="wide">sky.hdr 다시 받기</button>
+        <p id="assetState" class="hint"></p>
+      </section>
+
+      <section>
+        <h2>Renderer</h2>
+        <pre class="codebox">Three.js 0.164.1
+outputColorSpace = SRGBColorSpace
+toneMapping = NoToneMapping
+exposure = 1
+shadowMap = false</pre>
+      </section>
+
+      <section>
+        <h2>상태</h2>
+        <div id="status" class="status">준비 중...</div>
+      </section>
+    </aside>
+    <main id="viewport"><canvas id="canvas"></canvas></main>
+  </div>
+  <script type="module" src="/main.js"></script>
+</body>
+</html>
